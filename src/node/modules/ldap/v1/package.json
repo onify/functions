@@ -1,0 +1,8 @@
+{
+	"name": "ldap",
+	"version": "1.0.0",
+	"type": "module",
+	"dependencies": {
+		"ldapjs": "^3.0.7"
+	}
+}

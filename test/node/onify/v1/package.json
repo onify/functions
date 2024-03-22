@@ -1,0 +1,8 @@
+{
+	"name": "module",
+	"description": "module",
+	"type": "module",
+	"dependencies": {
+	    "split": "^1.0.1"
+	}
+}

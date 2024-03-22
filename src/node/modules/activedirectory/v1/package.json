@@ -1,0 +1,8 @@
+{
+	"name": "activedirectory",
+	"version": "1.0.0",
+	"type": "module",
+	"dependencies": {
+		"activedirectory2": "^2.2.0"
+	}
+}

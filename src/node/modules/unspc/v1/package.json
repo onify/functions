@@ -1,0 +1,8 @@
+{
+	"name": "unspc",
+	"version": "1.0.0",
+	"type": "module",
+	"dependencies": {
+		"papaparse": "^5.4.1"
+	}
+}

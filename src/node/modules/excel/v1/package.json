@@ -1,0 +1,8 @@
+{
+	"name": "excel",
+	"version": "1.0.0",
+	"type": "module",
+	"dependencies": {
+		"read-excel-file": "^5.7.1"
+	}
+}

@@ -1,0 +1,6 @@
+{
+  "name": "custom",
+  "description": "module",
+  "type": "module",
+  "dependencies": {}
+}
