@@ -173,3 +173,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Document hub api resources
 - Use module name as category in swagger
 - Move mergeImportData to other endpoint
+- Fix `npm run test`
