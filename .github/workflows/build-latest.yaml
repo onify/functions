@@ -41,4 +41,4 @@ jobs:
         run: |-
           gcloud builds submit \
             --quiet \
-            --tag "eu.gcr.io/$PROJECT_ID/hub/functions:latest"
+            --tag "eu.gcr.io/$PROJECT_ID/functions:latest"

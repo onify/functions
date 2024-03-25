@@ -47,4 +47,4 @@ jobs:
         run: |-
           gcloud builds submit \
             --quiet \
-            --tag "eu.gcr.io/$PROJECT_ID/hub/functions:${{ steps.extract_branch.outputs.branch }}"
+            --tag "eu.gcr.io/$PROJECT_ID/functions:${{ steps.extract_branch.outputs.branch }}"

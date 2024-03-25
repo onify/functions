@@ -57,18 +57,18 @@ jobs:
         run: |-
           gcloud builds submit \
             --quiet \
-            --tag "eu.gcr.io/$PROJECT_ID/hub/functions:$GITHUB_SHA"
+            --tag "eu.gcr.io/$PROJECT_ID/functions:$GITHUB_SHA"
 
       - name: Tag image
         run: |-
           gcloud container images add-tag --quiet \
-            "eu.gcr.io/$PROJECT_ID/hub/functions:$GITHUB_SHA" \
-            "eu.gcr.io/$PROJECT_ID/hub/functions:${{ steps.variables.outputs.full_version_tag }}"
+            "eu.gcr.io/$PROJECT_ID/functions:$GITHUB_SHA" \
+            "eu.gcr.io/$PROJECT_ID/functions:${{ steps.variables.outputs.full_version_tag }}"
 
           gcloud container images add-tag --quiet \
-            "eu.gcr.io/$PROJECT_ID/hub/functions:$GITHUB_SHA" \
-            "eu.gcr.io/$PROJECT_ID/hub/functions:${{ steps.variables.outputs.minor_version_tag }}"
+            "eu.gcr.io/$PROJECT_ID/functions:$GITHUB_SHA" \
+            "eu.gcr.io/$PROJECT_ID/functions:${{ steps.variables.outputs.minor_version_tag }}"
 
           gcloud container images add-tag --quiet \
-            "eu.gcr.io/$PROJECT_ID/hub/functions:$GITHUB_SHA" \
-            "eu.gcr.io/$PROJECT_ID/hub/functions:${{ steps.variables.outputs.major_version_tag }}"
+            "eu.gcr.io/$PROJECT_ID/functions:$GITHUB_SHA" \
+            "eu.gcr.io/$PROJECT_ID/functions:${{ steps.variables.outputs.major_version_tag }}"
