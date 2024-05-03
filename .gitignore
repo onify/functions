@@ -130,6 +130,8 @@ dist
 .pnp.*
 
 # custom directory
+custom/resources/*
 !custom/src/node/modules/hello/*
 !custom/test/node/hello/*
 uploads
+
