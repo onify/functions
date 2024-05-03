@@ -309,7 +309,7 @@ const initRoutes = async (modules) => {
       };
     }
 
-    logger.info(`Registered module "${name} ${versionPrefix}"`);
+    logger.info(`Registered module /${versionPrefix}/${name}`);
   }
 
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDefinition));
