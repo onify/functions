@@ -8,6 +8,8 @@ import { validateRoute, validateSchema } from './lib/validation.js';
 import joiToSwagger from 'joi-to-swagger';
 import { handleSingleUploadFile } from './lib/upload.js';
 import { logger } from '../lib/logger.js';
+import packageJson from '../../package.json' with { type: "json" };
+import { url } from 'inspector';
 
 const CUSTOM_MODULES_DIR = './custom/src/node/modules';
 const SYSTEM_MODULES_DIR = './src/node/modules';
@@ -16,8 +18,8 @@ let swaggerDefinition = {
   openapi: '3.0.0',
   info: {
     title: 'Onify Functions',
-    description: 'REST-API functions based on Node.js',
-    version: '2.0.0',
+    description: '[https://github.com/onify/functions](https://github.com/onify/functions)',
+    version: packageJson.version
   },
 };
 
@@ -312,7 +314,11 @@ const initRoutes = async (modules) => {
     logger.info(`Registered module /${versionPrefix}/${name}`);
   }
 
-  app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDefinition));
+  app.use(
+    '/documentation',
+    swaggerUI.serve,
+    swaggerUI.setup(swaggerDefinition)
+  );
 };
 
 /**
