@@ -12,7 +12,7 @@ const resourceURL = `${process.env.ONIFY_API_URL}/admin/resources/file?stream=fa
 const listResourcesURL = `${process.env.ONIFY_API_URL}/admin/resources?tree=true`;
 const resourcesHistoryURL = `${process.env.ONIFY_API_URL}/admin/resources/history`;
 const apiAdminToken = process.env.ONIFY_API_TOKEN;
-const fetchResources = process.env.ONIFY_API_RESOURCES === 'true';
+const fetchResources = process.env.ONIFY_API_RESOURCES_DOWNLOAD === 'true';
 const resourcesSource = process.env.ONIFY_API_RESOURCES_SOURCE || '/';
 const resourcesDestination =
   process.env.ONIFY_API_RESOURCES_DESTINATION || '/custom/resources';
