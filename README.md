@@ -190,8 +190,6 @@ The body of the request should be a JSON array of UNSPSC® codes.
 - `includeMeta`: Whether to include Segment, Family, Class in the response. Defaults to true. This is an optional parameter.
 - `deepSearch`: Whether to also search for code in Segment, Family, Class. Otherwise only Commodity. Defaults to true. This is an optional parameter.
 
-## API Endpoints
-
 #### GET /unspsc/{code}
 
 This endpoint allows you to retrieve information about a specific UNSPSC code.
@@ -344,7 +342,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## TODO
 
+- Fix `npm run test`
+- Fix CI/CD pipeline
 - Document custom function
 - Document hub api resources
 - Fix/Move mergeImportData to other endpoint
-- Fix `npm run test`
