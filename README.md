@@ -342,7 +342,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## TODO
 
-- Add
 - Fix `npm run test`
 - Fix CI/CD pipeline
 - Document custom function
