@@ -1,5 +1,12 @@
 {
-  "ignore": ["tmp/", "node_modules/", "logs/", "test/", "/custom/resources/"],
+  "ignore": [
+    "tmp/",
+    "node_modules/",
+    "logs/",
+    "test/",
+    "/custom/resources/",
+    "/custom/test/"
+  ],
   "ext": "js json env",
   "watch": ["*", ".env"]
 }
