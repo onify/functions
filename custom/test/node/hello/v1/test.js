@@ -50,7 +50,7 @@ describe('hello:', () => {
     const res = await request({
       method: 'PUT',
       url: `${endpoint}/world`,
-      payload: {
+      body: {
         comment: 'hello',
       },
     });
