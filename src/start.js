@@ -7,19 +7,20 @@ import Joi from 'joi';
 import { validateRoute, validateSchema } from './lib/validation.js';
 import joiToSwagger from 'joi-to-swagger';
 import { handleSingleUploadFile } from './lib/upload.js';
-import { logger } from '../lib/logger.js';
-import packageJson from '../../package.json' with { type: "json" };
+import { logger } from './lib/logger.js';
+import packageJson from '../package.json' assert { type: 'json' };
 import { url } from 'inspector';
 
-const CUSTOM_MODULES_DIR = './custom/src/node/modules';
-const SYSTEM_MODULES_DIR = './src/node/modules';
+const CUSTOM_MODULES_DIR = './custom/src/modules';
+const SYSTEM_MODULES_DIR = './src/modules';
 
 let swaggerDefinition = {
   openapi: '3.0.0',
   info: {
     title: 'Onify Functions',
-    description: '[https://github.com/onify/functions](https://github.com/onify/functions)',
-    version: packageJson.version
+    description:
+      '[https://github.com/onify/functions](https://github.com/onify/functions)',
+    version: packageJson.version,
   },
 };
 
@@ -56,9 +57,8 @@ const loadModules = async (baseDir) => {
   const modules = modulePaths.map(async (modulePath) => {
     return {
       path: modulePath,
-      module: (
-        await await import(new URL(`../../${modulePath}`, import.meta.url))
-      ).module,
+      module: (await await import(new URL(`../${modulePath}`, import.meta.url)))
+        .module,
     };
   });
 

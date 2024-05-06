@@ -2,13 +2,13 @@
 
 import express from 'express';
 import dotenv from 'dotenv';
-import { run as nodeRun } from '../node/start.js';
+import { run as nodeRun } from '../start.js';
 import { resolve, join } from 'path';
 import { logger, httpLogger } from './logger.js';
 import { request } from './http-request.js';
 import { rmSync, mkdirSync, existsSync, readFileSync, writeFileSync } from 'fs';
 import path from 'path';
-import packageJson from '../../package.json' with { type: "json" };
+import packageJson from '../../package.json' assert { type: 'json' };
 
 dotenv.config();
 

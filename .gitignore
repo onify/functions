@@ -131,7 +131,7 @@ dist
 
 # custom directory
 custom/resources/*
-!custom/src/node/modules/hello/*
-!custom/test/node/hello/*
+!custom/src/modules/hello/*
+!custom/test/hello/*
 uploads
 
