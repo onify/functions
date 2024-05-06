@@ -58,7 +58,7 @@ const module = {
       handler: (req, res) => {
         req.log.debug(`Request ${req.method.toUpperCase()} ${req.path}`);
 
-        return res.status(200).send({ hello: req.body.name });
+        return res.status(201).send({ hello: req.body.name });
       },
     },
     {
@@ -85,7 +85,7 @@ const module = {
           comment: req.body.comment,
         };
 
-        return res.status(201).send(result);
+        return res.status(200).send(result);
       },
     },
     {
@@ -108,7 +108,7 @@ const module = {
           'bye bye': req.params.name,
         };
 
-        return res.status(201).send(result);
+        return res.status(200).send(result);
       },
     },
   ],
