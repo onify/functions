@@ -237,7 +237,7 @@ Here is an example how to run in Docker.
 
 ```yaml
 functions:
-  image: eu.gcr.io/onify-images/functions:latest
+  image: <container registry>/functions:latest
   pull_policy: always
   restart: always
   ports:
@@ -266,7 +266,7 @@ spec:
         - name: onify-regcred
       containers:
         - name: functions
-          image: eu.gcr.io/onify-images/functions:latest
+          image: <container registry>/functions:latest
           ports:
             - name: functions
               containerPort: 8585
