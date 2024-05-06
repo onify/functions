@@ -343,6 +343,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## TODO
 
 - Fix `npm run test`
+- Verify `Dockerfile`
 - Fix CI/CD pipeline
 - Document custom function
 - Document hub api resources

@@ -10,13 +10,11 @@ COPY ./package.json ./
 COPY ./app.js ./
 
 COPY ./src ./src
-COPY ./test ./test
+COPY ./resources ./resources
 COPY ./custom ./custom
 
 RUN find . -name 'package.json' -not -path '**/node_modules/*' -execdir npm ci \;
 
 RUN npm prune --production
-
-ENV NODE_ENV=production
 
 CMD [ "npm", "start", "--silent" ]
