@@ -2,10 +2,22 @@
 
 [![Build latest](https://github.com/onify/functions/actions/workflows/build.yaml/badge.svg)](https://github.com/onify/functions/actions/workflows/build.yaml)
 
-**Onify Functions** is a set of REST-API functions based on [Node.js](https://nodejs.org/). It can be used in the Onify ecosystem, eg. Onify Flow or Onify Helix. You are also free to use outside of Onify. Good luck!
+**Onify Functions** is a set of REST-API functions based on [Node.js](https://nodejs.org/). It can be used in the Onify ecosystem, eg. Onify Flow or Onify Helix. You are also free to use outside of Onify. Onify Functions also support downloading Onify Hub resources and adding your own custom functions. Feel free to [Contribute](#contribute)! Good luck!
 
-> NOTE: Onify Functions will soon replace [Onify Hub Functions](https://github.com/onify/hub-functions)!
+If you want to build functions in other languange then Node.js, have a look at these great frameworks:
 
+- Python
+  - FastAPI: https://github.com/tiangolo/fastapi
+  - Flask: https://flask.palletsprojects.com/
+  - Django REST framework: https://www.django-rest-framework.org/
+- PowerShell
+  - Pode: https://badgerati.github.io/Pode/
+
+> IMPORTANT: Onify Functions are a replacement for [Onify Hub Functions](https://github.com/onify/hub-functions)!
+
+## Contents
+
+- [Get started](#get-started)
 - [Changelog](#changelog)
 - [Modules](#modules)
 - [Custom modules](#custom-modules)
@@ -15,6 +27,31 @@
 - [Support](#support)
 - [Contribute](#contribute)
 - [License](#license)
+- [Todo](#todo)
+
+## Get started
+
+Onify Functions is a set of REST-API functions to be used in the Onify ecosystem. You can either use this image as-is or **clone this repo** and create your own custom image.
+
+### Download resources
+
+Onify Functions support downloading resources from Onify Hub API. This is optional but can be used if you want to utilize resources in your functions. To configure downloading of resources, see [environment variables](#environment-variables) section.
+
+### Upgrades
+
+When we release a new version of Onify Functions you can upgrade your own repo to _latest_ version by running the following command:
+
+Get `latest` version:
+
+```bash
+npx giget "gh:onify/functions" ./ --force --verbose
+```
+
+Get version `2.0.0`:
+
+```bash
+npx giget "gh:onify/functions#v2.0.0./" ./ --force --verbose
+```
 
 ## Changelog
 
@@ -200,17 +237,20 @@ This endpoint allows you to retrieve information about a specific UNSPSC code.
 
 ### Custom modules
 
-_Coming soon..._
+Want to build your own functions? Go right ahead! Use this repo as a boilterplate to get started.
+Start by making a copy of `/custom/src/modules/hello` and `/custom/test/hello` folders. Good luck!
+
+> NOTE: Always think [TDD (Test Driven Development)](https://en.wikipedia.org/wiki/Test-driven_development) when you develop your own functions.
 
 ## Environment variables
 
 - `NODE_ENV`: The environment in which the application is running.
-- `PORT`: The port number on which the application will listen.
+- `PORT`: The port number on which the application will listen. Default `8585`.
 - `ONIFY_API_TOKEN`: The API token for accessing the Onify Hub API.
 - `ONIFY_API_URL`: The URL of the Onify Hub API.
-- `ONIFY_API_RESOURCES_DOWNLOAD`: Whether to enable the use of custom resources. Set to `true` to enable.
-- `ONIFY_API_RESOURCES_DESTINATION`: The destination directory for storing custom resources.
-- `ONIFY_API_RESOURCES_SOURCE`: The source directory for custom resources.
+- `ONIFY_API_RESOURCES_DOWNLOAD`: Whether to enable the use of custom resources. Default `false`. Set to `true` to enable.
+- `ONIFY_API_RESOURCES_DESTINATION`: The destination directory for storing custom resources. Default `/custom/resources`.
+- `ONIFY_API_RESOURCES_SOURCE`: The source directory for custom resources. Default `/` (all resources).
 - `ONIFY_API_RESOURCES_PULL_INTERVAL`: How often to pull resources from Onify API. Default to 30 minutes.
 
 Here is example of an `.env` file:
@@ -221,15 +261,17 @@ NODE_ENV=production
 PORT=8585
 
 # -- Onify Hub API variables --
+ONIFY_API_RESOURCES_DOWNLOAD=true
 ONIFY_API_TOKEN=****
 ONIFY_API_URL=http://localhost:8181/api/v2
 ONIFY_API_RESOURCES_DESTINATION=/custom/resources
 ONIFY_API_RESOURCES_SOURCE=/
-ONIFY_API_RESOURCES_DOWNLOAD=true
 ONIFY_API_RESOURCES_PULL_INTERVAL=60
 ```
 
 ## Deploy
+
+You can either use our base image or create your own custom image if you have custom functions.
 
 ### Docker
 
@@ -237,11 +279,19 @@ Here is an example how to run in Docker.
 
 ```yaml
 functions:
-  image: <container registry>/functions:latest
+  image: eu.gcr.io/onify-images/functions:latest # Or use your custom image
   pull_policy: always
   restart: always
   ports:
     - 8585:8585
+  environment:
+    NODE_ENV: production
+    ONIFY_API_RESOURCES_DOWNLOAD: 'true'
+    ONIFY_API_TOKEN: '<token>'
+    ONIFY_API_URL: '<url>/api/v2'
+    #ONIFY_API_RESOURCES_DESTINATION: /custom/resources
+    #ONIFY_API_RESOURCES_SOURCE: /
+    ONIFY_API_RESOURCES_PULL_INTERVAL: 60
 ```
 
 ### Kubernetes
@@ -266,10 +316,21 @@ spec:
         - name: onify-regcred
       containers:
         - name: functions
-          image: <container registry>/functions:latest
+          image: eu.gcr.io/onify-images/functions:latest # Or use your custom image
           ports:
             - name: functions
               containerPort: 8585
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: ONIFY_API_RESOURCES_DOWNLOAD
+              value: 'true'
+            - name: ONIFY_API_TOKEN
+              value: '<token>'
+            - name: ONIFY_API_URL
+              value: '<url>/api/v2'
+            - name: ONIFY_API_RESOURCES_PULL_INTERVAL
+              value: 60
 ---
 apiVersion: v1
 kind: Service
@@ -304,7 +365,7 @@ find . -name 'package.json' -not -path '**/node_modules/*' -execdir npm i \;
 
 ### Run
 
-To run it, just execute command `npm start`.
+To run it, just execute command `npm run dev` or `npm start`.
 
 ### Testing
 
@@ -334,7 +395,7 @@ Start by running `npm run dev`, then hit `F5` in VScode.
 ## Contribute
 
 Sharing is caring! :-) Please feel free to contribute! Please read [Code of Conduct](CODE_OF_CONDUCT.md) first.
-You can also create a new request (issue): https://github.com/onify/hub-functions/issues/new.
+You can also create a new request (issue): https://github.com/onify/functions/issues/new.
 
 ## License
 
@@ -343,8 +404,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## TODO
 
 - Fix `npm run test`
-- Verify `Dockerfile`
 - Fix CI/CD pipeline
-- Document custom function
-- Document hub api resources
+- CI/CD pipeline examples for custom image
 - Fix/Move mergeImportData to other endpoint

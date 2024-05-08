@@ -20,7 +20,7 @@ const module = {
             output: 'file',
           },
           allow: 'multipart/form-data',
-          maxBytes: 5242880, // 5mb default limit. Large file may be chunked in a separate hub-function.
+          maxBytes: 5242880, // 5mb default limit. Large file may be chunked in a separate functions.
         },
         validate: {
           body: Joi.object({
