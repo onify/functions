@@ -1,7 +1,6 @@
 import { request as httpRequest } from './http-request.js';
-import { config } from './setup-app.js';
 
-let basePath = `http://localhost:${config.port}`;
+let basePath = `http://localhost:9595`;
 
 /**
  * @param {RequestInfo} props
