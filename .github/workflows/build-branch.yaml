@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm ci
+      - run: find . -name 'package-lock.json' -execdir npm ci \;
       - run: npm test
   build-latest:
     name: Build branch
