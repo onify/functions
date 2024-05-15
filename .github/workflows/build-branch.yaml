@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 18
       - run: find . -name 'package-lock.json' -execdir npm ci \;
-      - run: npm run dev:test
+      - run: npm run dev:test &
       - run: npx wait-on tcp:9595
       - run: npm run test
   build-latest:
