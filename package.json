@@ -7,7 +7,6 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon --inspect=0.0.0.0:9229 app.js",
-    "dev:test": "cross-env PORT_OVERRIDE=9595 node app.js",
     "test": "vitest"
   },
   "repository": {
@@ -27,8 +26,6 @@
   "dependencies": {
     "axios": "^1.6.2",
     "body-parser": "^1.20.2",
-    "concurrently": "^8.2.2",
-    "cross-env": "^7.0.3",
     "deep-diff": "^1.0.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
