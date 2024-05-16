@@ -50,6 +50,7 @@ const handleSingleUploadFile = (req, res, next) => {
 
   return new Promise((resolve, reject) => {
     uploadFile(req, res, (error) => {
+      //
       if (error) {
         reject(error);
       }
