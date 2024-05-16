@@ -15,7 +15,8 @@ dotenv.config();
 const rootDir = resolve();
 let allResources = null; // This will store the entire resources tree.
 
-const port = process.env.PORT || 8585;
+const port =
+  process.env.PORT_OVERRIDE || process.env.ONIFY_API_INTERNAL_PORT || 8585;
 const resourcesSource = process.env.ONIFY_API_RESOURCES_SOURCE || '/';
 const resourceURL = `${process.env.ONIFY_API_URL}/admin/resources/file?stream=false&path=${resourcesSource}`;
 const listResourcesURL = `${process.env.ONIFY_API_URL}/admin/resources?tree=true`;
