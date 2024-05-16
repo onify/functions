@@ -403,7 +403,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## TODO
 
-- Fix `npm run test`
-- Fix CI/CD pipeline
 - CI/CD pipeline examples for custom image
 - Fix/Move mergeImportData to other endpoint
