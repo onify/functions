@@ -63,7 +63,8 @@ npx giget "gh:onify/functions#v2.0.0./" ./ --force --verbose
 
 ### 2.0.1
 
-- build: bump fast-xml-parser to 4.3.6
+- build: bump `fast-xml-parser` to 4.3.6
+- build: `use node:20-alpine`
 - chore: implement https://github.com/onify/commitlint-config
 
 ### 2.0.0
