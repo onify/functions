@@ -357,7 +357,7 @@ spec:
 
 ```
 $originalLocation = Get-Location
-Get-ChildItem -Path . -Filter package.json -Recurse | Where-Object { $_.DirectoryName -notmatch "node_modules" } | ForEach-Object { Set-Location $_.DirectoryName; npm i; }
+Get-ChildItem -Path . -Filter package.json -Recurse | Where-Object { $_.DirectoryName -notmatch "node_modules" } | ForEach-Object { Set-Location $_.DirectoryName; "----- " + $_.DirectoryName + "------"; npm i --no-fund; }
 Set-Location -Path $originalLocation
 ```
 
