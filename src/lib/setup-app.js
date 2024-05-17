@@ -70,7 +70,7 @@ async function downloadFile(resourcePath, destinationPath) {
   // Decode the base64 content
   const decodedContent = Buffer.from(
     response.result.content,
-    'base64'
+    'base64',
   ).toString('utf-8');
 
   // Save the decoded content as a utf-8 encoded file. Creating the directory if it doesn't exist.
@@ -103,7 +103,7 @@ const downloadResourcesFromFolder = async (folderPath) => {
           allResources.errors
             ? JSON.stringify(allResources.errors, null, 2)
             : ''
-        }`
+        }`,
       );
     }
   }
@@ -155,7 +155,7 @@ const handleResourceRequest = (response) => {
     logger.warn(
       `Failed to fetch resources history. Received status code ${statusCode}. ${
         result.errors ? JSON.stringify(result.errors, null, 2) : ''
-      }`
+      }`,
     );
 
     return false;
@@ -163,7 +163,7 @@ const handleResourceRequest = (response) => {
 
   if (result.length === 0) {
     logger.warn(
-      'Git in Onify API (resources) is not configured or working! Skipping (cannot) download resources.'
+      'Git in Onify API (resources) is not configured or working! Skipping (cannot) download resources.',
     );
 
     return false;
@@ -245,7 +245,7 @@ async function setupApp() {
 
   app.listen(port, () => {
     logger.info(
-      `Server version ${packageJson.version} is running on port ${port} in ${process.env.NODE_ENV} mode.`
+      `Server version ${packageJson.version} is running on port ${port} in ${process.env.NODE_ENV} mode.`,
     );
   });
 
@@ -257,7 +257,7 @@ async function setupApp() {
 
       if (renewedResources) {
         logger.info(
-          'Resources are updated. Stopping (and restarting) service...'
+          'Resources are updated. Stopping (and restarting) service...',
         );
         process.exit(0);
       }
