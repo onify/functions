@@ -33,6 +33,10 @@ If you want to build functions in other languange then Node.js, have a look at t
 
 Onify Functions is a set of REST-API functions to be used in the Onify ecosystem. You can either use this image as-is or **clone this repo** and create your own custom image.
 
+### Swagger documentation
+
+Onify Functions is based on Swagger to simplify the API documentation and is avaiable via `/documentation`, eg. http://localhost:8585/documentation.
+
 ### Download resources
 
 Onify Functions support downloading resources from Onify Hub API. This is optional but can be used if you want to utilize resources in your functions. To configure downloading of resources, see [environment variables](#environment-variables) section.
