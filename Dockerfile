@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:20-alpine
 
 LABEL vendor="Onify"
 LABEL code="nodejs"
@@ -13,6 +13,7 @@ COPY ./src ./src
 COPY ./resources ./resources
 COPY ./custom ./custom
 
+RUN apk add --no-cache findutils
 RUN find . -name 'package.json' -not -path '**/node_modules/*' -execdir npm ci \;
 
 RUN npm prune --production
