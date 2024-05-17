@@ -1,3 +1,3 @@
 export default {
-  extends: ['@commitlint/config-conventional', '@onify/commitlint-config'],
+  extends: ['@onify/commitlint-config'],
 };
