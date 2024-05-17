@@ -1,6 +1,6 @@
 # Onify Functions
 
-[![Build latest](https://github.com/onify/functions/actions/workflows/build.yaml/badge.svg)](https://github.com/onify/functions/actions/workflows/build.yaml)
+[![Build latest](https://github.com/onify/functions/actions/workflows/build-latest.yaml/badge.svg)](https://github.com/onify/functions/actions/workflows/build-latest.yaml)
 
 **Onify Functions** is a set of REST-API functions based on [Node.js](https://nodejs.org/). It can be used in the Onify ecosystem, eg. Onify Flow or Onify Helix. You are also free to use outside of Onify. Onify Functions also support downloading Onify Hub resources and adding your own custom functions. Feel free to [Contribute](#contribute)! Good luck!
 
@@ -403,7 +403,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## TODO
 
-- Fix `npm run test`
-- Fix CI/CD pipeline
 - CI/CD pipeline examples for custom image
 - Fix/Move mergeImportData to other endpoint

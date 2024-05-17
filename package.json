@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon --inspect=0.0.0.0:9229 app.js",
-    "test": "vitest run",
+    "test": "vitest",
     "prepare": "husky"
   },
   "repository": {
@@ -40,7 +40,8 @@
     "pino-pretty": "^10.3.1",
     "prettier": "^3.2.5",
     "swagger-ui-express": "^5.0.0",
-    "vitest": "^0.34.6"
+    "vitest": "^0.34.6",
+    "wait-on": "^7.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
