@@ -23,6 +23,12 @@ const module = {
           }),
         },
       },
+      /**
+       * Handles XML to JSON conversion request
+       * @param {Object} req - The request object containing XML data in the body and query parameters
+       * @param {Object} res - The response object to send the result
+       * @returns {Object} The HTTP response with status code and converted JSON or validation error
+       */
       handler: (req, res) => {
         const resultValidator = XMLValidator.validate(req.body);
 
@@ -54,6 +60,12 @@ const module = {
           }),
         },
       },
+      /**
+       * Handles the conversion of JSON to XML
+       * @param {Object} req - The request object containing the JSON body and query parameters
+       * @param {Object} res - The response object used to send the result
+       * @returns {Object} The response object with status and XML data or error message
+       */
       handler: (req, res) => {
         let jsonObj;
         try {
