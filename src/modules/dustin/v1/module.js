@@ -309,6 +309,12 @@ const module = {
           }),
         },
       },
+      /**
+       * Handles an order request, processes the order details, and generates an XML response.
+       * @param {Object} req - The request object containing order information.
+       * @param {Object} res - The response object used to send the result back to the client.
+       * @returns {Object} The response containing either the XML string of the processed order or an error message.
+       */
       handler: (req, res) => {
         const currentDateTime = Moment(new Date()).format().replaceAll('-', ''); //Format: YYYYMMDDTHH:MM:SS[[+-]HH:MM]? (the first MM is Months, the other two are minutes)
 
@@ -408,6 +414,18 @@ const module = {
         let orderRowsCount = 0;
         let totalMonetaryAmount = 0.0;
 
+        ```
+        /**
+         * Processes order rows from the request body and adds them to the order detail.
+         * @param {Object} req - The request object containing the order rows.
+         * @param {Object} res - The response object for sending error responses.
+         * @param {Object} parser - The parser object for parsing XML.
+         * @param {string} orderRowBaseXML - The base XML template for order rows.
+         * @param {Object} order - The order object to which item details are added.
+         * @param {string} currentDateTime - The current date and time.
+         * @returns {undefined} This function doesn't return a value, but modifies the order object and may send an error response.
+         */
+        ```
         req.body.OrderRows.forEach((requestOrderRow) => {
           ++orderRowsCount;
           try {
