@@ -96,6 +96,13 @@ const module = {
         },
       },
       middlewares: [
+        /**
+         * Middleware function to process and transform query parameters
+         * @param {Object} req - Express request object
+         * @param {Object} res - Express response object
+         * @param {Function} next - Express next middleware function
+         * @returns {void} This function doesn't return a value, it calls the next middleware
+         */
         (req, res, next) => {
           let { tlsOptions, attributes } = req.query;
 
@@ -116,18 +123,45 @@ const module = {
           next();
         },
       ],
+      /**
+       * Handles LDAP search request and returns the results
+       * @param {Object} req - The request object containing query parameters
+       * @param {Object} res - The response object to send the result
+       * @returns {Promise<void>} Sends a response with search results or an error message
+       */
       handler: async (req, res) => {
         const { url, username, password, tlsOptions } = req.query;
 
+        /**
+         * Sets up an LDAP client connection asynchronously
+         * @returns {Promise<LDAPClient>} A promise that resolves with the connected LDAP client or rejects with an error
+         */
         async function setupClient() {
+          /**
+           * Creates and connects to an LDAP client
+           * @param {string} url - The URL of the LDAP server
+           * @param {Object} tlsOptions - TLS options for the LDAP connection
+           * @returns {Promise<Object>} A promise that resolves with the connected LDAP client
+           */
           return new Promise((resolve, reject) => {
             const client = LDAP.createClient({
               url,
               tlsOptions,
             });
 
+            /**
+             * Handles client errors and performs cleanup
+             * @param {Error} error - The error object received from the client
+             * @returns {void} This function doesn't return a value, it rejects a promise
+             */
             const clientErrorListener = (error) => {
               if (client) {
+                /**
+                 * Unbinds the client and handles any potential errors
+                 * @param {function} callback - The callback function to handle the unbind operation result
+                 * @param {Error} callback.error - The error object if an error occurred during unbinding
+                 * @returns {void} This method does not return a value
+                 */
                 client.unbind((error) => {
                   if (error) {
                     req.log.warn(error.message);
@@ -140,6 +174,11 @@ const module = {
 
             client.on('error', clientErrorListener);
 
+            /**
+             * Sets up a connection event listener for the client
+             * @param {Function} clientErrorListener - The error listener to be removed upon successful connection
+             * @returns {Promise<Client>} A promise that resolves with the connected client
+             */
             client.on('connect', () => {
               client.removeListener('error', clientErrorListener);
               resolve(client);
@@ -159,7 +198,17 @@ const module = {
         try {
           const client = await setupClient();
 
+          /**
+           * Simplifies an array of row objects by extracting and flattening specific properties.
+           * @param {Array} rows - An array of row objects to be simplified.
+           * @returns {Array} An array of simplified objects with flattened attributes.
+           */
           function simplify(rows) {
+            /**
+             * Processes rows of data and transforms them into an array of objects with specific properties.
+             * @param {Array} rows - An array of row objects containing objectName, objectSid, objectGUID, and attributes.
+             * @returns {Array} An array of objects with properties extracted and transformed from the input rows.
+             */
             return rows.reduce((accumulator, row) => {
               const { objectName, objectSid, objectGUID, attributes } = row;
 
@@ -189,8 +238,26 @@ const module = {
             }, []);
           }
 
+          /**
+           * Performs an asynchronous login operation using LDAP authentication.
+           * @param {void} - This function doesn't accept any parameters directly.
+           * @returns {Promise<void>} A promise that resolves if the login is successful, or rejects with an error if authentication fails.
+           */
           async function login() {
+            /**
+             * Performs LDAP authentication using the provided username and password
+             * @param {string} username - The username for LDAP authentication
+             * @param {string} password - The password for LDAP authentication
+             * @returns {Promise<void>} A promise that resolves if authentication is successful, or rejects with an error if authentication fails
+             */
             return new Promise((resolve, reject) => {
+              /**
+               * Binds the client with the provided username and password
+               * @param {string} username - The username for authentication
+               * @param {string} password - The password for authentication
+               * @param {function} callback - The callback function to handle the binding result
+               * @returns {Promise} A promise that resolves if binding is successful, or rejects with an error if binding fails
+               */
               client.bind(username, password, (error) => {
                 if (error) {
                   error.statusCode = 401;
@@ -202,11 +269,39 @@ const module = {
             });
           }
 
+          /**
+           * Performs an asynchronous LDAP search operation and normalizes the results.
+           * @returns {Promise<Array>} A promise that resolves to an array of normalized search results.
+           *                           If 'raw' is false, the results are simplified and certain binary
+           *                           fields (objectSid, objectGUID) are converted to string format.
+           *                           If 'raw' is true, the original result objects are returned.
+           */
           async function search() {
+            /**
+             * Performs an LDAP search operation and normalizes the results.
+             * @param {Object} client - The LDAP client object.
+             * @param {string} base - The search base for the LDAP query.
+             * @param {Object} options - The search options for the LDAP query.
+             * @param {boolean} raw - Flag to determine if the results should be returned in raw format.
+             * @returns {Promise<Array>} A promise that resolves to an array of normalized LDAP search results.
+             */
             return new Promise((resolve, reject) => {
+              /**
+               * Performs an LDAP search operation and processes the results.
+               * @param {Object} client - The LDAP client object.
+               * @param {string} base - The search base for the LDAP query.
+               * @param {Object} options - Search options for the LDAP query.
+               * @param {Function} callback - Callback function to handle the search results.
+               * @returns {Promise<Array>} A promise that resolves to an array of normalized LDAP entries.
+               */
               client.search(base, options, (error, result) => {
                 let rows = [];
 
+                /**
+                 * Normalizes rows by converting binary SIDs and GUIDs to string format, and optionally simplifies the data structure.
+                 * @param {void} - This function doesn't take any parameters directly, but operates on global variables 'rows' and 'raw'.
+                 * @returns {Array} An array of normalized and optionally simplified row objects.
+                 */
                 function normalizeRows() {
                   try {
                     for (const row of rows) {
@@ -231,15 +326,35 @@ const module = {
                   }
                 }
 
+                /**
+                 * Handles the 'searchEntry' event for LDAP search results
+                 * @param {Object} entry - The search entry object containing LDAP attribute information
+                 * @returns {void} This method doesn't return a value, it adds the entry to the rows array
+                 */
                 result.on('searchEntry', (entry) => {
                   rows.push(entry.pojo);
                 });
 
+                /**
+                 * Handles errors emitted by the result object
+                 * @param {Error} error - The error object emitted by the result
+                 * @returns {void} This function doesn't return a value, it rejects a promise
+                 */
                 result.on('error', (error) => {
                   reject(error);
                 });
 
+                /**
+                 * Handles the end event of the result stream and performs cleanup tasks
+                 * @param {Function} resolve - The resolve function of a Promise
+                 * @returns {void} This function doesn't return a value
+                 */
                 result.on('end', () => {
+                  /**
+                   * Unbinds the client and handles any potential errors
+                   * @param {Function} callback - The callback function to handle errors
+                   * @returns {void} This method doesn't return a value
+                   */
                   client.unbind((error) => {
                     if (error) {
                       // Logger.warn(error.message);
@@ -249,7 +364,18 @@ const module = {
                   resolve(normalizeRows());
                 });
 
+                /**
+                 * Handles the 'page' event of the result object and performs cleanup actions
+                 * @param {Function} resolve - The resolve function to be called with normalized rows
+                 * @returns {void} This method doesn't return a value
+                 */
                 result.on('page', () => {
+                  /**
+                   * Unbinds the client and handles any potential errors
+                   * @param {function} callback - The callback function to handle the unbind result
+                   * @param {Error|null} callback.error - The error object if an error occurred, null otherwise
+                   * @returns {void} This method does not return a value
+                   */
                   client.unbind((error) => {
                     if (error) {
                       // Logger.warn(error.message);
