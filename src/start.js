@@ -29,12 +29,27 @@ let swaggerDefinition = {
  */
 let app;
 
+/**
+ * Asynchronously loads modules from a specified base directory.
+ * @param {string} baseDir - The base directory path to search for modules.
+ * @returns {Promise<Array<Object>>} An array of objects, each containing the path and imported module.
+ */
 const loadModules = async (baseDir) => {
   const modulePaths = [];
 
   if (existsSync(baseDir)) {
+    /**
+     * Recursively searches for 'module.js' files within a given base directory and its subdirectories.
+     * @param {string} baseDir - The base directory to start the search from.
+     * @returns {string[]} An array of file paths to the found 'module.js' files.
+     */
     readdirSync(baseDir).forEach((moduleDirectory) => {
       const versionDirectories = readdirSync(join(baseDir, moduleDirectory))
+        /**
+         * Filters version directories based on whether they are actual directories
+         * @param {string} versionDirectory - The name of a potential version directory
+         * @returns {boolean} True if the version directory is an actual directory, false otherwise
+         */
         .filter((versionDirectory) =>
           statSync(
             join(baseDir, moduleDirectory, versionDirectory)
@@ -42,9 +57,22 @@ const loadModules = async (baseDir) => {
         )
         .sort();
 
+      /**
+       * Searches for 'module.js' files within version directories and adds their paths to the modulePaths array.
+       * @param {string[]} versionDirectories - An array of version directory names to search through.
+       * @param {string} baseDir - The base directory path.
+       * @param {string} moduleDirectory - The name of the module directory.
+       * @param {string[]} modulePaths - An array to store the paths of found 'module.js' files.
+       * @returns {void} This function does not return a value, but modifies the modulePaths array.
+       */
       versionDirectories.forEach((versionDir) => {
         const module = readdirSync(
           join(baseDir, moduleDirectory, versionDir)
+        /**
+         * Finds and returns the 'module.js' file from an array of file names
+         * @param {string[]} fileName - An array of file names to search through
+         * @returns {string|undefined} The 'module.js' file name if found, otherwise undefined
+         */
         ).find((fileName) => fileName === 'module.js');
 
         if (module) {
@@ -54,6 +82,11 @@ const loadModules = async (baseDir) => {
     });
   }
 
+  /**
+   * Asynchronously imports modules from specified paths and returns an array of objects containing the module path and imported module.
+   * @param {string[]} modulePaths - An array of module paths to import.
+   * @returns {Promise<Array<{path: string, module: any}>>} A promise that resolves to an array of objects, each containing the module path and the imported module.
+   */
   const modules = modulePaths.map(async (modulePath) => {
     return {
       path: modulePath,
@@ -70,6 +103,12 @@ const loadModules = async (baseDir) => {
  */
 const getDocumentParameters = (type, schema) => {
   const { swagger } = joiToSwagger(schema);
+  /**
+   * Transforms Swagger properties into an array of parameter objects
+   * @param {Object} swagger - The Swagger object containing properties and required fields
+   * @param {string} type - The type of parameter (e.g., 'query', 'body', 'path')
+   * @returns {Array} An array of parameter objects formatted for OpenAPI specification
+   */
   const params = Object.keys(swagger.properties).map((key) => {
     const { required } = swagger;
     const { description, ...schema } = swagger.properties[key];
@@ -132,11 +171,25 @@ const getDocRequestBody = (schema, config) => {
   return { content };
 };
 
+/**
+ * Creates middleware functions for schema validation of request query and body.
+ * @param {Object} validationSchema - An object containing schema definitions for query and body.
+ * @param {Object} [validationSchema.query] - Schema for validating request query parameters.
+ * @param {Object} [validationSchema.body] - Schema for validating request body.
+ * @returns {Array<Function>} An array of middleware functions for schema validation.
+ */
 const schemaValidationMiddlewares = (validationSchema) => {
   const { query, body } = validationSchema ?? { query: null, body: null };
   const middlewares = [];
 
   if (query) {
+    /**
+     * Middleware function to validate query parameters against a schema
+     * @param {Object} req - Express request object
+     * @param {Object} res - Express response object
+     * @param {Function} next - Express next middleware function
+     * @returns {void} Calls next() if validation passes, otherwise sends a 400 status with errors
+     */
     middlewares.push((req, res, next) => {
       if (req.query) {
         const { errors, value } = validateSchema(req.query, query, res);
@@ -153,6 +206,13 @@ const schemaValidationMiddlewares = (validationSchema) => {
   }
 
   if (body) {
+    /**
+     * Middleware function to validate request body against a schema
+     * @param {Object} req - Express request object
+     * @param {Object} res - Express response object
+     * @param {Function} next - Express next middleware function
+     * @returns {void} Calls next middleware if validation passes, otherwise sends 400 status with errors
+     */
     middlewares.push((req, res, next) => {
       if (req.body) {
         const { errors } = validateSchema(req.body, body, res);
@@ -172,12 +232,24 @@ const schemaValidationMiddlewares = (validationSchema) => {
   return middlewares;
 };
 
+/**
+ * Middleware function to set a default logger for incoming requests
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ * @returns {void} This function doesn't return anything
+ */
 const setDefaultLogger = (req, res, next) => {
   req.log.debug(`Request ${req.method.toUpperCase()} ${req.path}`);
 
   next();
 };
 
+/**
+ * Initializes routes for the application
+ * @param {Array} modules - An array of module objects containing route information
+ * @returns {Promise<void>} No return value
+ */
 const initRoutes = async (modules) => {
   swaggerDefinition.paths = {};
 
@@ -236,6 +308,11 @@ const initRoutes = async (modules) => {
         ...swaggerDefinition.paths[path],
         ...{
           [method]: {
+            /**
+             * Filters out the 'api' tag from the given array of tags
+             * @param {string[]} tags - An array of tag strings
+             * @returns {string[]} A new array of tags with 'api' removed
+             */
             tags: tags.filter((tag) => tag !== 'api'),
             summary,
             description,
