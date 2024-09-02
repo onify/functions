@@ -33,6 +33,12 @@ const module = {
           }),
         },
       },
+      /**
+       * Handles an SFTP file retrieval request asynchronously
+       * @param {Object} req - The request object containing query parameters for SFTP connection and file details
+       * @param {Object} res - The response object used to send the server's response
+       * @returns {Promise<Object>} A promise that resolves with the file content or rejects with an error
+       */
       handler: async (req, res) => {
         let sftp = new Client();
         let r = await sftp
@@ -43,9 +49,20 @@ const module = {
             username: req.query.username,
             password: req.query.password,
           })
+          /**
+           * Retrieves a file using SFTP
+           * @param {Object} req - The request object containing query parameters
+           * @param {string} req.query.filename - The name of the file to retrieve
+           * @returns {Promise<Buffer>} A promise that resolves with the file content as a Buffer
+           */
           .then(() => {
             return sftp.get(req.query.filename);
           })
+          /**
+           * Processes the data received from an SFTP operation
+           * @param {Buffer} data - The raw data received from the SFTP operation
+           * @returns {Object} An object containing the response content and status code
+           */
           .then((data) => {
             const content = data.toString();
             sftp.end();
@@ -54,6 +71,11 @@ const module = {
               code: 200,
             };
           })
+          /**
+           * Handles errors in the request processing
+           * @param {Error} err - The error object caught during request processing
+           * @returns {Response} A response with 500 status code and error message
+           */
           .catch((err) => {
             req.log.error(err.message);
             return res.status(500).send(err.message);
@@ -89,6 +111,12 @@ const module = {
           }),
         },
       },
+      /**
+       * Handles SFTP connection and file listing
+       * @param {Object} req - The request object containing query parameters for SFTP connection
+       * @param {Object} res - The response object to send the result
+       * @returns {Promise<Object>} A promise that resolves with the HTTP response
+       */
       handler: async (req, res) => {
         let sftp = new Client();
         let r = await sftp
@@ -99,13 +127,28 @@ const module = {
             username: req.query.username,
             password: req.query.password,
           })
+          /**
+           * Lists the contents of a specified directory on the SFTP server.
+           * @param {string} req.query.path - The path of the directory to list.
+           * @returns {Promise<Array>} A promise that resolves to an array of directory contents.
+           */
           .then(() => {
             return sftp.list(req.query.path);
           })
+          /**
+           * Handles the successful completion of an SFTP operation and sends the response
+           * @param {Object} data - The data received from the SFTP operation
+           * @returns {Object} The HTTP response object with a 200 status and the SFTP operation data
+           */
           .then((data) => {
             sftp.end();
             return res.status(200).send(data);
           })
+          /**
+           * Error handling middleware for catching and logging errors, then sending an appropriate response
+           * @param {Error} err - The error object caught in the catch block
+           * @returns {Response} A response with 500 status code and the error message
+           */
           .catch((err) => {
             req.log.error(err.message);
             return res.status(500).send(err.message);
