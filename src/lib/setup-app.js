@@ -43,6 +43,12 @@ const config = {
   fetchResources,
 };
 
+/**
+ * Recursively searches for an item with a specified path in a nested item list
+ * @param {Array} itemList - The list of items to search through
+ * @param {string} path - The path to search for
+ * @returns {Object|null} The found item object, or null if not found
+ */
 function findItemByPath(itemList, path) {
   for (const item of itemList) {
     if (item.path === path) {
@@ -56,6 +62,12 @@ function findItemByPath(itemList, path) {
   return null;
 }
 
+/**
+ * Downloads a file from a remote resource and saves it locally.
+ * @param {string} resourcePath - The path of the resource to download.
+ * @param {string} destinationPath - The local path where the file will be saved.
+ * @returns {Promise<void>} A promise that resolves when the file has been downloaded and saved.
+ */
 async function downloadFile(resourcePath, destinationPath) {
   const url = `${resourceURL}${encodeURIComponent(resourcePath)}`;
 
@@ -81,10 +93,20 @@ async function downloadFile(resourcePath, destinationPath) {
   writeFileSync(destinationPath, decodedContent, { encoding: 'utf-8' });
 }
 
+/**
+ * Converts a resource path to a local file system path
+ * @param {string} resourcePath - The path of the resource, starting with a forward slash
+ * @returns {string} The corresponding local file system path
+ */
 function localPathFromResourcePath(resourcePath) {
   return join(resourcesPath, resourcePath.slice(1));
 }
 
+/**
+ * Asynchronously downloads resources from a specified folder path.
+ * @param {string} folderPath - The path of the folder to download resources from.
+ * @returns {Promise<void>} A promise that resolves when all resources have been downloaded.
+ */
 const downloadResourcesFromFolder = async (folderPath) => {
   if (!allResources) {
     const response = await request({
@@ -122,6 +144,11 @@ const downloadResourcesFromFolder = async (folderPath) => {
   }
 };
 
+/**
+ * Downloads and saves resources associated with a specific commit ID.
+ * @param {string} commitID - The ID of the commit to download resources for.
+ * @returns {Promise<void>} A promise that resolves when the download and save operation is complete.
+ */
 const downloadAndSaveCommitID = async (commitID) => {
   allResources = null;
 
@@ -134,7 +161,17 @@ const downloadAndSaveCommitID = async (commitID) => {
   });
 
   const paths = response.result
+    /**
+     * Filters an array to include only directory-type elements
+     * @param {Array} data - The array of data objects to filter
+     * @returns {Array} A new array containing only the elements with type 'directory'
+     */
     .filter((data) => data.type === 'directory')
+    /**
+     * Maps an array of objects to extract the 'path' property from each object
+     * @param {Array} data - An array of objects containing a 'path' property
+     * @returns {Array} An array of path values extracted from the input objects
+     */
     .map((data) => data.path);
 
   logger.info('Downloading resources...');
@@ -148,6 +185,13 @@ const downloadAndSaveCommitID = async (commitID) => {
   writeFileSync(commitIDFilepath, commitID);
 };
 
+/**
+ * Handles the response from a resource request.
+ * @param {Object} response - The response object from the resource request.
+ * @param {number} response.statusCode - The HTTP status code of the response.
+ * @param {Object|Array} response.result - The result data from the response.
+ * @returns {boolean} Returns true if the request was successful and resources are available, false otherwise.
+ */
 const handleResourceRequest = (response) => {
   const { statusCode, result } = response;
 
@@ -172,6 +216,10 @@ const handleResourceRequest = (response) => {
   return true;
 };
 
+/**
+ * Synchronizes resources by fetching the latest commit ID, clearing the existing resources directory, and downloading the new resources.
+ * @returns {Promise<void>} A promise that resolves when the synchronization is complete.
+ */
 const syncResources = async () => {
   const response = await request({
     method: 'GET',
@@ -197,7 +245,11 @@ const syncResources = async () => {
   await downloadAndSaveCommitID(commitid);
 };
 
-const isResourcesUpdated = async () => {
+/**
+ * Checks if resources have been updated by comparing the latest commit ID with the stored one.
+ * @param {void} - This function doesn't take any parameters.
+ * @returns {Promise<boolean>} A promise that resolves to true if resources are updated, false otherwise.
+ */const isResourcesUpdated = async () => {
   const response = await request({
     method: 'GET',
     url: resourcesHistoryURL,
@@ -226,6 +278,11 @@ const isResourcesUpdated = async () => {
   }
 };
 
+/**
+ * Sets up and initializes the Express application with various middleware, routes, and background tasks.
+ * @param {void} - This function doesn't take any parameters.
+ * @returns {Promise<express.Application>} A Promise that resolves to the configured Express application instance.
+ */
 async function setupApp() {
   const app = express();
 
@@ -243,6 +300,12 @@ async function setupApp() {
   await nodeRun(app);
   // await pwshRun(app); TODO: To be implemented
 
+  /**
+   * Starts the server and listens for incoming connections on the specified port
+   * @param {number} port - The port number on which the server will listen
+   * @param {Function} callback - A callback function to be executed when the server starts listening
+   * @returns {void} This method does not return a value
+   */
   app.listen(port, () => {
     logger.info(
       `Server version ${packageJson.version} is running on port ${port} in ${process.env.NODE_ENV} mode.`,
@@ -250,6 +313,11 @@ async function setupApp() {
   });
 
   if (fetchResources) {
+    /**
+     * Sets up an interval to periodically check for resource updates and restart the service if updates are detected.
+     * @param {number} resourcesPullInterval - The interval in milliseconds between each check for resource updates.
+     * @returns {NodeJS.Timeout} The interval object returned by setInterval.
+     */
     setInterval(async () => {
       logger.debug('Checking resource updates...');
 
