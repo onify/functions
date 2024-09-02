@@ -9,7 +9,17 @@ import { sep } from 'path';
 const version = __dirname.split(sep).reverse()[0];
 const endpoint = `${version}/excel`;
 
+/**
+ * Test suite for Excel file reading functionality
+ * @param {string} endpoint - The API endpoint for reading Excel files
+ * @returns {void} This function does not return a value
+ */
 describe('excel read:', () => {
+  /**
+   * Tests POST request to /read endpoint with correct headers and content
+   * @param {void} None - This test function doesn't take any parameters
+   * @returns {void} Doesn't return a value, but performs assertions
+   */
   it(`POST ${endpoint}/read - content with correct headers - returns 200`, async () => {
     const headerRow = ['Förnamn', 'Efternamn', 'Epost'];
     const dataRow = ['First', 'Last', 'first@mail.com'];
@@ -61,6 +71,11 @@ describe('excel read:', () => {
     expect(result.errors).to.be.empty;
   });
 
+  /**
+   * Tests POST request to /read endpoint with multiple data rows in Excel content
+   * @param {string} endpoint - The base URL for the API endpoint
+   * @returns {void} This test function doesn't return a value, it uses assertions to validate the response
+   */
   it(`POST ${endpoint}/read - content with multiple data rows - returns 200`, async () => {
     const headerRow = ['Förnamn', 'Efternamn', 'Epost'];
     const dataRows = [
@@ -114,6 +129,11 @@ describe('excel read:', () => {
     expect(result.errors).to.be.empty;
   });
 
+  /**
+   * Tests POST request to /read endpoint with content containing un-mapped header
+   * @param {string} endpoint - The base URL for the API endpoint
+   * @returns {void} This test function doesn't return a value
+   */
   it(`POST ${endpoint}/read - content with un-mapped header - returns 200`, async () => {
     const headerRow = ['Förnamn', 'Efternamn_skip', 'Epost'];
     const dataRows = [
@@ -167,6 +187,11 @@ describe('excel read:', () => {
     expect(result.errors).to.be.empty;
   });
 
+  /**
+   * Tests the POST /read endpoint for handling invalid email in Excel file upload
+   * @param {void} None - This function doesn't take any parameters
+   * @returns {Promise<void>} Doesn't return a value, but performs assertions
+   */
   it(`POST ${endpoint}/read - invalid email supplied should include row in error array - returns 200`, async () => {
     const headerRow = ['Förnamn', 'Efternamn', 'Epost'];
     const dataRows = [
@@ -209,6 +234,11 @@ describe('excel read:', () => {
 
     expect(statusCode).to.equal(200);
     expect(
+      /**
+       * Finds the index of an error in the result.errors array that matches specific criteria
+       * @param {Array} result.errors - An array of error objects
+       * @returns {number} The index of the first matching error, or -1 if no match is found
+       */
       result.errors.findIndex((error) => {
         const { row, column, reason } = error;
         return row === 2 && column === 'Epost' && reason === 'not_an_email';
@@ -216,6 +246,11 @@ describe('excel read:', () => {
     ).to.not.equal(-1);
   });
 
+  /**
+   * Tests the POST request to the /read endpoint without a schema supplied.
+   * @param {void} None - This function doesn't take any parameters.
+   * @returns {Promise<void>} Doesn't return a value, but performs assertions on the response.
+   */
   it(`POST ${endpoint}/read - no schema supplied - returns 200`, async () => {
     const headerRow = ['Förnamn', 'Efternamn', 'Epost'];
     const dataRows = [
@@ -254,6 +289,11 @@ describe('excel read:', () => {
     expect(result.errors).to.be.empty;
   });
 
+  /**
+   * Tests the POST /read endpoint when a sheet is supplied, expecting a 200 status code.
+   * @param {void} None - This test function doesn't take any parameters.
+   * @returns {void} This test function doesn't return a value, it uses assertions to validate the response.
+   */
   it(`POST ${endpoint}/read - sheet is supplied - returns 200`, async () => {
     const headerRow = ['Förnamn', 'Efternamn', 'Epost'];
     const dataRows = [
@@ -294,6 +334,11 @@ describe('excel read:', () => {
     expect(result.errors).to.be.empty;
   });
 
+  /**
+   * Test case for POST request to /read endpoint with an unknown sheet name
+   * @param {void} None - This function doesn't take any parameters
+   * @returns {Promise<void>} Doesn't return a value, but performs assertions
+   */
   it(`POST ${endpoint}/read - an unknown sheet name is supplied - returns 500`, async () => {
     const headerRow = ['Förnamn', 'Efternamn', 'Epost'];
     const dataRows = [
@@ -325,6 +370,11 @@ describe('excel read:', () => {
     expect(res.statusCode).to.equal(500);
   });
 
+  /**
+   * Tests POST request to /read endpoint with invalid JSON input
+   * @param {void} None - This function doesn't take any parameters
+   * @returns {Promise<void>} Doesn't return a value, but performs assertions
+   */
   it(`POST ${endpoint}/read - invalid json input is supplied - returns 400`, async () => {
     const headerRow = ['Förnamn', 'Efternamn', 'Epost'];
     const dataRows = [
