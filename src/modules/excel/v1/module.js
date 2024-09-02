@@ -42,7 +42,19 @@ const module = {
         },
       },
       middlewares: [
+        /**
+         * Middleware function to parse and process schema in request body
+         * @param {Object} req - Express request object
+         * @param {Object} res - Express response object
+         * @param {Function} next - Express next middleware function
+         * @returns {void} This function doesn't return anything, it calls the next middleware
+         */
         (req, res, next) => {
+          /**
+           * Converts a string representation of a type to its corresponding JavaScript constructor function or custom type.
+           * @param {string} type - The string representation of the type to be parsed.
+           * @returns {function|string} The corresponding constructor function for standard types, or the original string for custom types.
+           */
           function getParsedType(type) {
             switch (type) {
               case 'String':
@@ -85,12 +97,27 @@ const module = {
           next();
         },
       ],
+      /**
+       * Handles the processing of an Excel file, extracting data based on provided schema or generating a schema if not provided.
+       * @param {Object} req - The request object containing file, sheet, and schema information.
+       * @param {Object} req.body - The request body.
+       * @param {Object} req.body.file - The uploaded Excel file object.
+       * @param {string|number} [req.body.sheet=1] - The sheet number or name to process (defaults to 1).
+       * @param {Object} [req.body.schema={}] - The schema object for data extraction (generated if empty).
+       * @param {Object} res - The response object used to send the result back to the client.
+       * @returns {Promise<void>} Sends a JSON response with the extracted records or an error message.
+       */
       handler: async (req, res) => {
         const { file, sheet } = req.body;
         let { schema } = req.body;
 
         try {
           if (Object.keys(schema).length === 0) {
+            /**
+             * Reads an XLSX file and generates a schema object based on its contents
+             * @param {string} file.path - The path to the XLSX file
+             * @returns {Object} An object representing the schema, where keys are column headers and values are objects containing 'prop' and 'type' properties
+             */
             schema = await readXlsxFile(file.path).then((rows) => {
               const obj = {};
 
