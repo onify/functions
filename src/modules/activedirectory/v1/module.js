@@ -95,6 +95,12 @@ const module = {
           }),
         },
       },
+      /**
+       * Handles an asynchronous request to search for users in an Active Directory.
+       * @param {Object} req - The request object containing query parameters for AD configuration and search options.
+       * @param {Object} res - The response object used to send the result back to the client.
+       * @returns {Promise<Object>} A promise that resolves with the search results or rejects with an error.
+       */
       handler: async (req, res) => {
         var config = {
           url: req.query.url,
@@ -124,7 +130,18 @@ const module = {
         };
 
         try {
+          /**
+           * Asynchronously finds users in Active Directory using provided options
+           * @param {Object} opts - Options for searching users in Active Directory
+           * @returns {Promise<Array>} A promise that resolves to an array of found users
+           */
           const users = await new Promise((resolve, reject) => {
+            /**
+             * Searches for users in Active Directory based on provided options
+             * @param {Object} opts - Options for filtering and searching users
+             * @param {Function} callback - Callback function to handle the result
+             * @returns {Promise} A promise that resolves with the found users or rejects with an error
+             */
             ad.findUsers(opts, (error, users) => {
               if (error) {
                 return reject(error);
