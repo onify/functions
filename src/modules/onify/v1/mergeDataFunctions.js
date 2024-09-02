@@ -254,8 +254,9 @@ function generateHTMLReport(report, detailedDiffs, originalTargetData, sourceDat
 										htmlReport += `<li>${change.path.join('.')} extended with ${JSON.stringify(change.item.rhs)}</li>`;
 										const arrayValueToHighlight = JSON.stringify(change.item.rhs).replace(/ /g, '&nbsp;');
 										const escapedArrayValueToHighlight = escapeRegExp(arrayValueToHighlight);
-										afterStr = afterStr.replace(new RegExp(escapedArrayValueToHighlight, "g"), `<strong>${arrayValueToHighlight}</strong>`);
-									} else if (change.kind === 'E' || change.kind === 'N') {
+										const RE2 = require('re2');
+										
+										afterStr = afterStr.replace(new RE2(escapedArrayValueToHighlight), `<strong>${arrayValueToHighlight}</strong>`);									} else if (change.kind === 'E' || change.kind === 'N') {
 										try {
 											const lhsObj = JSON.parse(change.lhs);
 											const rhsObj = JSON.parse(change.rhs);
@@ -269,22 +270,25 @@ function generateHTMLReport(report, detailedDiffs, originalTargetData, sourceDat
 
 													const diffValue = diff.rhs.replace(/ /g, '&nbsp;');
 													const escapedDiffValue = escapeRegExp(diffValue);
-													afterStr = afterStr.replace(new RegExp(escapedDiffValue, "g"), `<strong>${diffValue}</strong>`);
-												});
+													const RE2 = require('re2');
+													
+													afterStr = afterStr.replace(new RE2(escapedDiffValue), `<strong>${diffValue}</strong>`);												});
 											} else {
 												// Handle primitive types or non-JSON strings
 												htmlReport += `<li>${change.path.join('.')} changed from ${JSON.stringify(change.lhs)} to ${JSON.stringify(change.rhs)}</li>`;
 												let valueToHighlight = JSON.stringify(change.rhs).replace(/ /g, '&nbsp;');
 												const escapedValueToHighlight = escapeRegExp(valueToHighlight);
-												afterStr = afterStr.replace(new RegExp(escapedValueToHighlight, "g"), `<strong>${valueToHighlight}</strong>`);
-											}
+												const RE2 = require('re2');
+												
+												afterStr = afterStr.replace(new RE2(String(escapedValueToHighlight)), `<strong>${valueToHighlight}</strong>`);											}
 										} catch (e) {
 											// Handle primitive types or non-JSON strings
 											htmlReport += `<li>${change.path.join('.')} changed from ${JSON.stringify(change.lhs)} to ${JSON.stringify(change.rhs)}</li>`;
 											let valueToHighlight = JSON.stringify(change.rhs).replace(/ /g, '&nbsp;');
 											const escapedValueToHighlight = escapeRegExp(valueToHighlight);
-											afterStr = afterStr.replace(new RegExp(escapedValueToHighlight, "g"), `<strong>${valueToHighlight}</strong>`);
-										}
+											const RE2 = require('re2');
+											
+											afterStr = afterStr.replace(new RE2(escapedValueToHighlight), `<strong>${valueToHighlight}</strong>`);										}
 									}
 								}
 							});
