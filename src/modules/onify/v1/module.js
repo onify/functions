@@ -10,6 +10,11 @@ const allowedKeys = [
 ];
 
 const importObjectSchema = Joi.object(
+  /**
+   * Reduces an array of allowed keys into a Joi schema object
+   * @param {Array} allowedKeys - An array of keys to be used in the schema
+   * @returns {Object} A Joi schema object with each key mapped to an optional array of objects
+   */
   allowedKeys.reduce((schema, key) => {
     schema[key] = Joi.array().items(Joi.object()).optional();
     return schema;
@@ -38,6 +43,12 @@ const module = {
           }).optional().description('Merge options'),
         },
       },
+      /**
+       * Handles the merge import data request and sends the result as a response.
+       * @param {Object} req - The request object containing the source and target data in the body, and options in the query.
+       * @param {Object} res - The response object used to send the result back to the client.
+       * @returns {Object} The response object with the merge result or error message.
+       */
       handler: (req, res) => {
         const { source, target } = req.body;
         const options = req.query;
