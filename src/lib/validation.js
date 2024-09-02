@@ -18,6 +18,11 @@ const validateSchema = (data, schema, res) => {
   if (error) {
     const { details } = error;
 
+    /**
+     * Maps validation details to a simplified error format
+     * @param {Array} details - An array of validation details containing message and path
+     * @returns {Array} An array of simplified error objects with message and path properties
+     */
     const errors = details.map((detail) => {
       const { message, path } = detail;
       return { message, path };
@@ -25,6 +30,11 @@ const validateSchema = (data, schema, res) => {
 
     const result =
       errors.length > 1
+        /**
+         * Maps error objects to their corresponding error messages
+         * @param {Array} errors - An array of error objects
+         * @returns {Object} An object containing an array of error messages
+         */
         ? { errors: errors.map((error) => error.message) }
         : { error: errors[0].message };
 
@@ -58,6 +68,11 @@ const validateRoute = (moduleName, route) => {
   }
 
   if (
+    /**
+     * Checks if a route object contains all standard route properties
+     * @param {Object} route - The route object to be checked
+     * @returns {boolean} Returns false if all standard properties are present, true otherwise
+     */
     !STANDARD_ROUTE_PROPERTIES.every((prop) =>
       Object.keys(route).includes(prop)
     )
