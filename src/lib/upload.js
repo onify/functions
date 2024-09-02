@@ -48,7 +48,21 @@ const handleSingleUploadFile = (req, res, next) => {
     mkdirSync(UPLOAD_DIR);
   }
 
+  /**
+   * Uploads a file and returns a promise with the file and body information
+   * @param {Object} req - The request object containing file and body data
+   * @param {Object} res - The response object
+   * @param {Function} next - The next middleware function
+   * @returns {Promise<Object>} A promise that resolves with an object containing file and body information or rejects with an error
+   */
   return new Promise((resolve, reject) => {
+    /**
+     * Uploads a file and handles the request
+     * @param {Object} req - The request object
+     * @param {Object} res - The response object
+     * @param {Function} next - The next middleware function
+     * @returns {Promise<Object>} A promise that resolves with an object containing the uploaded file and request body
+     */
     uploadFile(req, res, (error) => {
       //
       if (error) {
