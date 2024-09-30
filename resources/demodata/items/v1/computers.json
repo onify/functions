@@ -1,0 +1,97 @@
+[
+    {
+        "type": "computer",
+        "key": "computer-desktop01",
+        "name": "DESKTOP01",
+        "tag": [
+            "asset",
+            "computer",
+            "hp",
+            "_demo"
+        ],
+        "status": "Unknown",
+        "action": [
+            {
+                "name": "Wipe computer",
+                "id": "wipe",
+                "bulksupported": false,
+                "url": "/",
+                "primary": false
+            },
+            {
+                "name": "Autopilot reset",
+                "id": "autopilot-reset",
+                "bulksupported": false,
+                "url": "/",
+                "primary": false
+            }
+        ],
+        "description": "5CG3381FH6, Windows",
+        "attribute": {
+            "managed_device_owner": "Company",
+            "device_name": "DESKTOP01",
+            "compliance_state": "Unknown state",
+            "model": "HP EliteBook 835 G6 Notebook PC",
+            "manufacturer": "HP",
+            "enrolled_date": "2022-05-22T11:02:40Z",
+            "serialnumber": "5CG3381FH6",
+            "last_sync_date": "2023-10-22T12:04:08Z",
+            "operating_system": "Windows",
+            "type_of_device": "Computer",
+            "_manager_id": "f1a2b3c4-d5e6-7890-abcd-ef1234567890",
+            "manager_dn": "John Doe",
+            "manager_mail": "john.doe@acme.com",
+            "_id": "e7b8c350-ef1a-4b2b-9a3c-1f2d3e4a5b6c",
+            "_company_key": "b2c3d4e5f6a78901bcdef123456789ab",
+            "_tenant_id": "c3d4e5f6-7890-1234-abcd-ef5678901234"
+        }
+    },
+    {
+        "type": "computer",
+        "key": "computer-desktop02",
+        "name": "DESKTOP02",
+        "tag": [
+            "asset",
+            "computer",
+            "hp",
+            "_demo"
+        ],
+        "status": "Compliant",
+        "action": [
+            {
+                "name": "Wipe computer",
+                "id": "wipe",
+                "bulksupported": false,
+                "url": "/",
+                "primary": false
+            },
+            {
+                "name": "Autopilot reset",
+                "id": "autopilot-reset",
+                "bulksupported": false,
+                "url": "/",
+                "primary": false
+            }
+        ],
+        "description": "5CG3381FH7, Windows",
+        "attribute": {
+            "managed_device_owner": "Company",
+            "device_name": "DESKTOP02",
+            "compliance_state": "Compliant",
+            "model": "HP EliteBook 835 G6 Notebook PC",
+            "manufacturer": "HP",
+            "enrolled_date": "2022-05-22T11:02:40Z",
+            "serialnumber": "5CG3381FH7",
+            "last_sync_date": "2023-10-22T12:04:08Z",
+            "operating_system": "Windows",
+            "type_of_device": "Computer",
+            "_manager_id": "f1a2b3c4-d5e6-7890-abcd-ef1234567890",
+            "manager_dn": "John Doe",
+            "manager_mail": "john.doe@acme.com",
+            "_id": "e7b8c350-ef1a-4b2b-9a3c-1f2d3e4a5b6b",
+            "_company_key": "b2c3d4e5f6a78901bcdef123456789ab",
+            "_tenant_id": "c3d4e5f6-7890-1234-abcd-ef5678901234"
+        }
+    }
+
+]
