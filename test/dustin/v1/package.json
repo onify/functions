@@ -1,8 +1,11 @@
 {
-	"name": "dustin-test",
-	"version": "1.0.0",
-	"type": "module",
-	"dependencies": {
-		"fast-xml-parser": "^4.3.6"
-	}
+  "name": "dustin-test",
+  "version": "1.0.0",
+  "type": "module",
+  "imports": {
+    "#/*": "../../../src/*"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^4.3.6"
+  }
 }

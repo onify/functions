@@ -372,7 +372,7 @@ Set-Location -Path $originalLocation
 **Install node modules in Linux:**
 
 ```
-find . -name 'package.json' -not -path '**/node_modules/*' -execdir npm i \;
+find . -name 'package.json' -not -path '**/node_modules/*' -execdir sh -c 'echo "Installing in: $PWD" && npm i' \;
 ```
 
 ### Run

@@ -1,6 +1,6 @@
 {
   "name": "functions",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Onify Functions",
   "main": "app.js",
   "type": "module",
@@ -40,7 +40,7 @@
     "pino-pretty": "^10.3.1",
     "prettier": "^3.2.5",
     "swagger-ui-express": "^5.0.0",
-    "vitest": "^0.34.6",
+    "vitest": "^4.0.14",
     "wait-on": "^7.2.0"
   },
   "devDependencies": {

@@ -8,7 +8,7 @@ import { validateRoute, validateSchema } from './lib/validation.js';
 import joiToSwagger from 'joi-to-swagger';
 import { handleSingleUploadFile } from './lib/upload.js';
 import { logger } from './lib/logger.js';
-import packageJson from '../package.json' assert { type: 'json' };
+import packageJson from '../package.json' with { type: 'json' };
 import { url } from 'inspector';
 
 const CUSTOM_MODULES_DIR = './custom/src/modules';
@@ -37,14 +37,14 @@ const loadModules = async (baseDir) => {
       const versionDirectories = readdirSync(join(baseDir, moduleDirectory))
         .filter((versionDirectory) =>
           statSync(
-            join(baseDir, moduleDirectory, versionDirectory)
-          ).isDirectory()
+            join(baseDir, moduleDirectory, versionDirectory),
+          ).isDirectory(),
         )
         .sort();
 
       versionDirectories.forEach((versionDir) => {
         const module = readdirSync(
-          join(baseDir, moduleDirectory, versionDir)
+          join(baseDir, moduleDirectory, versionDir),
         ).find((fileName) => fileName === 'module.js');
 
         if (module) {
@@ -317,7 +317,7 @@ const initRoutes = async (modules) => {
   app.use(
     '/documentation',
     swaggerUI.serve,
-    swaggerUI.setup(swaggerDefinition)
+    swaggerUI.setup(swaggerDefinition),
   );
 };
 
