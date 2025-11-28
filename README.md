@@ -61,6 +61,15 @@ npx giget "gh:onify/functions#v2.0.0./" ./ --force --verbose
 
 ### latest
 
+### 2.0.2
+
+- build: bump `mssql` to 12.1.1
+- build: bump `vitest` to 4.0.14
+- build: update GitHub Actions to use Node.js 20 and latest action versions
+- build: fix GitHub Actions gcloud authentication (remove deprecated Python 2.7 dependency)
+- fix: replace deprecated `assert` with `with` in JSON import statements
+- fix: add imports mapping to test package.json files for module resolution
+
 ### 2.0.1
 
 - build: bump `fast-xml-parser` to 4.3.6
