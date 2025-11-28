@@ -8,15 +8,14 @@ import { logger, httpLogger } from './logger.js';
 import { request } from './http-request.js';
 import { rmSync, mkdirSync, existsSync, readFileSync, writeFileSync } from 'fs';
 import path from 'path';
-import packageJson from '../../package.json' assert { type: 'json' };
+import packageJson from '../../package.json' with { type: 'json' };
 
 dotenv.config();
 
 const rootDir = resolve();
 let allResources = null; // This will store the entire resources tree.
 
-const port =
-  process.env.PORT || 8585;
+const port = process.env.PORT || 8585;
 const resourcesSource = process.env.ONIFY_API_RESOURCES_SOURCE || '/';
 const resourceURL = `${process.env.ONIFY_API_URL}/admin/resources/file?stream=false&path=${resourcesSource}`;
 const listResourcesURL = `${process.env.ONIFY_API_URL}/admin/resources?tree=true`;
